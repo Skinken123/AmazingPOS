@@ -1,5 +1,7 @@
 package controller;
 
+import java.util.List;
+
 import integration.ExternalAccountingSystem;
 import integration.ExternalDiscountDatabase;
 import integration.ExternalInventorySystem;
@@ -7,6 +9,7 @@ import integration.ExternalSystemsCreator;
 import integration.ReceiptPrinter;
 import model.Sale;
 import model.dto.ItemDTO;
+import model.dto.ItemListDTO;
 import model.dto.ReceiptDTO;
 
 
@@ -59,4 +62,30 @@ public class Controller {
         return currenReceiptDTO;
     }
 
+    /**
+     * Ends the current sale. This method must be called before payment.
+     * 
+     * @return The total price of the sale.
+     */
+    public double endSale() {
+        return newSale.getTotalPrice();
+    }
+
+    /**
+     * Sends the information of the sale to the external systems and prints the receipt.
+     * 
+     * @param payment The payment made by the customer.
+     * @return The change that should be given to the customer.
+     */
+    public double payment(double amountPaid){
+        double totalPrice = newSale.getTotalPrice();
+        double change = amountPaid - totalPrice;
+        ReceiptDTO finalReceiptDTO = newSale.getFinalReceiptDTO(amountPaid, change);
+        externalAS.updateAccountingSystem(finalReceiptDTO);
+
+        List<ItemDTO> finalItemList = newSale.getItemList();
+        ItemListDTO finalItemListDTO = new ItemListDTO(finalItemList);
+        externalIS.updateInventory(finalItemListDTO);
+        return change;
+    }
 }

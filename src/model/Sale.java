@@ -20,6 +20,10 @@ public class Sale {
         newReceipt = new Receipt();
     }
 
+    public List<ItemDTO> getItemList() {
+        return this.itemList;
+    }
+
     /**
      * Adds an item to the sale. If the item already exists in the sale, the quantity of the item will be increased.
      * 
@@ -39,5 +43,18 @@ public class Sale {
         }
         ReceiptDTO currenReceiptDTO = newReceipt.updateVATPriceList(itemList);
         return currenReceiptDTO;
+    }
+
+    /**
+     * Gets the total price of the sale.
+     * 
+     * @return The total price of the sale.
+     */
+    public double getTotalPrice() {
+        return newReceipt.getTotalPrice();
+    }
+
+    public ReceiptDTO getFinalReceiptDTO(double payment, double change) {
+        return newReceipt.setSaleTimeAndPayment(payment, change);
     }
 }

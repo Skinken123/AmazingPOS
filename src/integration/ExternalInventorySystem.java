@@ -1,6 +1,7 @@
 package integration;
 
 import model.dto.ItemDTO;
+import model.dto.ItemListDTO;
 
 /**
  * Represents a class which will communicate with the actual inventory system.
@@ -16,6 +17,15 @@ public class ExternalInventorySystem {
     public ItemDTO requestItemData(int itemIdentifier) {
         //some code that fetches the item data from the inventory system
         return new ItemDTO(10, itemIdentifier, "Milk", "A carton of milk", 0.12, 1);
+    }
+
+    /**
+     * Updates the inventory system with the information of the sale.
+     * @param itemDTO The itemDTO object that contains the information of the item that was sold.
+     */
+    public void updateInventory(ItemListDTO itemListDTO) {
+        //some code that updates the inventory system
+        System.out.println("The inventory has been updated");
     }
         
 }

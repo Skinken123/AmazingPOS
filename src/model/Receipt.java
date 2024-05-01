@@ -19,6 +19,14 @@ public class Receipt {
     private List<String> basicItemList;
 
     /**
+     * gets the total price of the sale.
+     * @return the total price of the sale.
+     */
+    public double getTotalPrice() {
+        return this.totalPrice;
+    }
+
+    /**
      * Sets the time of the sale.
      */
     public void setSaleTime(LocalTime saleTime) {
@@ -77,5 +85,13 @@ public class Receipt {
         
         ReceiptDTO currentReceiptDTO = new ReceiptDTO(saleTime, totalPrice, totalVAT, payment, change, basicItemList);
         return currentReceiptDTO;
+    }
+
+    public ReceiptDTO setSaleTimeAndPayment(double payment, double change){
+        setSaleTime(LocalTime.now());
+        setPayment(payment);
+        setChange(change);
+        ReceiptDTO finalReceiptDTO = new ReceiptDTO(saleTime, totalPrice, totalVAT, payment, change, basicItemList);
+        return finalReceiptDTO;
     }
 }

@@ -31,6 +31,11 @@ public class View {
 
         ReceiptDTO currReceiptDTO = contr.enterNewItem(1, 2);
         printReceipt(currReceiptDTO);
+
+        Double finalPrice = contr.endSale();
+        System.out.println("The final price is: " + finalPrice);
+        Double change = contr.payment(100);
+        System.out.println("The change is: " + change);
     }
 
     /**
