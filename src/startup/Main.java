@@ -22,5 +22,6 @@ public class Main {
         ReceiptPrinter printer = new ReceiptPrinter();
         Controller contr = new Controller(creator, printer);
         View view = new View(contr);
+        view.sampleExecution();
     }
 }
