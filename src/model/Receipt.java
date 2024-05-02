@@ -27,6 +27,22 @@ public class Receipt {
     }
 
     /**
+     * gets the total VAT of the sale.
+     * @return the total VAT of the sale.
+     */
+    public double getTotalVAT() {
+        return this.totalVAT;
+    }
+
+    /**
+     * gets the current irem list of the sale.
+     * @return the current item list of the sale.
+     */
+    public List<ItemDTO> getCurrentItemList() {
+        return this.currentItemList;
+    }
+
+    /**
      * Sets the time of the sale.
      */
     public void setSaleTime(LocalTime saleTime) {

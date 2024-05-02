@@ -11,6 +11,11 @@ import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.AfterEach;
 
+/**
+ * This is the class that will test all of the non constructor/get/set methods in the Sale class.
+ 
+ */
+
 public class SaleTest {
     private Sale sale;
     private Receipt receipt;
@@ -18,6 +23,10 @@ public class SaleTest {
     private LocalTime saleTime;
     private double payment;
     private double change;
+
+    /**
+     * This method sets up the test class before each test method is run.
+     */
 
     @BeforeEach
     public void setUp() {
@@ -27,6 +36,11 @@ public class SaleTest {
         saleTime = null;
     }
 
+    /**
+     * This method tests the uppdateItemList method in the Sale class. 
+     * It creates a test object which is the expcted return of the method and compares it to the actual return of the method.
+     * It comfirms if the return is correct by each individual attribute of the two objects.
+     */
     @Test
     public void testUppdateItemList() {
         ItemDTO item = new ItemDTO(10, 1, "Milk", "1L", 0.12, 1);
@@ -60,6 +74,11 @@ public class SaleTest {
         
     }
 
+    /**
+     * This method tests the getTotalPrice method in the Sale class.
+     * It creates a test value which is the expcted return of the method and compares it to the actual return of the method.
+     */
+
     @Test
     public void testGetTotalPrice() {
         ItemDTO item = new ItemDTO(10, 1, "Milk", "1L", 0.12, 1);
@@ -69,6 +88,13 @@ public class SaleTest {
         double expected = 10.0;
         assertEquals(expected, result, "The total price is not the same");
     }
+
+    /**
+     * This method tests the getFinalReceiptDTO method in the Sale class.
+     * It creates a test object which is the expcted return of the method and compares it to the actual return of the method.
+     * It comfirms if the return is correct by each individual attribute of the two objects.
+     * I tried testing local time but it is very hard since the time is very precise and always changing.
+     */
 
     @Test
     public void testGetFinalReceiptDTO(){
@@ -103,6 +129,11 @@ public class SaleTest {
         assertTrue(resItemList.equals(expItemList), "The item list is not the same");
     
     }
+
+    /**
+     * This method tears down the test class after each test method is run. 
+     * Preparing it for a new test.
+     */
 
     @AfterEach
     public void tearDown() {
