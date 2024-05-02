@@ -16,7 +16,7 @@ public class Receipt {
     private double totalVAT;
     private double payment;
     private double change;
-    private List<String> basicItemList;
+    private List<ItemDTO> currentItemList;
 
     /**
      * gets the total price of the sale.
@@ -64,34 +64,45 @@ public class Receipt {
     /**
      * Sets the list of items in the sale.
      */
-    public void setBasicItemList(List<String> basicItemList) {
-        this.basicItemList = basicItemList;
+    public void setCurrentItemList(List<ItemDTO> currentItemList) {
+        this.currentItemList = currentItemList;
     }
+
+    /**
+     * Updates the total price and total VAT of the sale as well as the itemList.
+     * @param itemList The list of items in the sale.
+     * @return The updated receiptDTO object with the newest information.
+     */
 
     ReceiptDTO updateVATPriceList(List<ItemDTO> itemList){
         //antingen går den igenom alla element och räknar ut allt varje gång ett nytt item läggs till, 
         //eller så får metoden ett index med det nya itemet och räknar ut det nya priset etc och lägger till det. Då krävs get metoder för alla variabler i receipt.
         double totalPriceToSet = 0;
         double totalVATToSet = 0;
-        List<String> basicItemListToSet = new ArrayList<>();
         for (ItemDTO item : itemList) {
             totalPriceToSet += item.getPrice() * item.getQuantity();
             totalVATToSet += item.getPrice() * item.getQuantity() * item.getTaxVAT();
-            basicItemListToSet.add(item.getItemName() + "\t" + item.getQuantity() + " x " + item.getPrice() + "\t"+ item.getPrice() * item.getQuantity() + "  SEK ");
         } 
         setTotalPrice(totalPriceToSet);
         setTotalVAT(totalVATToSet);
-        setBasicItemList(basicItemListToSet);
+        setCurrentItemList(itemList);
         
-        ReceiptDTO currentReceiptDTO = new ReceiptDTO(saleTime, totalPrice, totalVAT, payment, change, basicItemList);
+        ReceiptDTO currentReceiptDTO = new ReceiptDTO(saleTime, totalPrice, totalVAT, payment, change, currentItemList);
         return currentReceiptDTO;
     }
+
+    /**
+     * Sets the sale time and payment of the sale.
+     * @param payment The payment made by the customer.
+     * @param change The change to be returned to the customer.
+     * @return The final receiptDTO object with the newest information.
+     */
 
     public ReceiptDTO setSaleTimeAndPayment(double payment, double change){
         setSaleTime(LocalTime.now());
         setPayment(payment);
         setChange(change);
-        ReceiptDTO finalReceiptDTO = new ReceiptDTO(saleTime, totalPrice, totalVAT, payment, change, basicItemList);
+        ReceiptDTO finalReceiptDTO = new ReceiptDTO(saleTime, totalPrice, totalVAT, payment, change, currentItemList);
         return finalReceiptDTO;
     }
 }

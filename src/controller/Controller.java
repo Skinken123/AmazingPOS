@@ -3,7 +3,6 @@ package controller;
 import java.util.List;
 
 import integration.ExternalAccountingSystem;
-import integration.ExternalDiscountDatabase;
 import integration.ExternalInventorySystem;
 import integration.ExternalSystemsCreator;
 import integration.ReceiptPrinter;
@@ -19,7 +18,6 @@ import model.dto.ReceiptDTO;
 public class Controller {
     private ReceiptPrinter printer;
     private ExternalAccountingSystem externalAS;
-    private ExternalDiscountDatabase externalDD;
     private ExternalInventorySystem externalIS;
     private Sale newSale;
 
@@ -32,7 +30,6 @@ public class Controller {
     public Controller(ExternalSystemsCreator creator, ReceiptPrinter printer) {
         this.printer = printer;
         this.externalAS = creator.getExternalAS();
-        this.externalDD = creator.getExternalDD();
         this.externalIS = creator.getExternalIS();
     }
 
@@ -46,18 +43,17 @@ public class Controller {
 
     /**
      * Enters an item to the current sale. This method must be called after a sale has been started.
-     * Step 1: The item identifier is sent to the external inventory system to get the item data.
-     * Step 2: The item data is used to create an ItemDTO object.
+     * Step 1: The item identifier is sent to the external inventory system to get a item dto object back with the item information.
+     * Step 2: The item dto object is sent to the sale object to be added to the current sale.
+     * Step 3: The updated sale information is sent back to the view to be displayed to the cashier and customer.
      * 
      * @param itemIdentifier The identifier of the item that is to be entered.
      * @param quantity The quantity of the item that is to be entered.
      * @return The DTO of the current receipt information after the item has been entered. 
      * The dto will be used by the view to display the updated sale infromation to the cashier and customer.
      */
-    public ReceiptDTO enterNewItem(int itemIdentifier, int quantity){
-        ItemDTO returnedItem = externalIS.requestItemData(itemIdentifier);
-        ItemDTO newItem = new ItemDTO(returnedItem.getPrice(), returnedItem.getItemIdentifier(), returnedItem.getItemName(), returnedItem.getItemDescription(), returnedItem.getTaxVAT(), quantity);
-        
+    public ReceiptDTO enterNewItem(int itemIdentifier){
+        ItemDTO newItem = externalIS.requestItemData(itemIdentifier);
         ReceiptDTO currenReceiptDTO = newSale.uppdateItemList(newItem);
         return currenReceiptDTO;
     }
@@ -68,16 +64,18 @@ public class Controller {
      * @return The total price of the sale.
      */
     public double endSale() {
+        System.out.println("The sale has ended:");
         return newSale.getTotalPrice();
     }
 
     /**
-     * Sends the information of the sale to the external systems and prints the receipt.
+     * This method is called when the customer pays for the sale. The method will update the external systems with the final sale information.
+     * The method will also return the final sale information in the form of a receiptDTO.
      * 
      * @param payment The payment made by the customer.
-     * @return The change that should be given to the customer.
+     * @return The final sale information in the form of a receiptDTO.
      */
-    public double payment(double amountPaid){
+    public ReceiptDTO payment(double amountPaid){
         double totalPrice = newSale.getTotalPrice();
         double change = amountPaid - totalPrice;
         ReceiptDTO finalReceiptDTO = newSale.getFinalReceiptDTO(amountPaid, change);
@@ -86,6 +84,15 @@ public class Controller {
         List<ItemDTO> finalItemList = newSale.getItemList();
         ItemListDTO finalItemListDTO = new ItemListDTO(finalItemList);
         externalIS.updateInventory(finalItemListDTO);
-        return change;
+        return finalReceiptDTO;
+    }
+
+    /**
+     * Calls the receipt printer to print the receipt.
+     * 
+     * @param receipt the object containing all information that the receipt printer needs to print the receipt.
+     */
+    public void printReceipt(ReceiptDTO receiptDTO) {
+        printer.printReceipt(receiptDTO);
     }
 }

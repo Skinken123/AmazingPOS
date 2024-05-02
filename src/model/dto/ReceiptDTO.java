@@ -13,7 +13,7 @@ public class ReceiptDTO {
     private double totalVAT;
     private double payment;
     private double change;
-    private List<String> basicItemList;
+    private List<ItemDTO> currentItemList;
 
     /**
      * Creates a new instance of a receiptDTO.
@@ -25,13 +25,13 @@ public class ReceiptDTO {
      * @param change The change of the sale.
      * @param basicItemList The list of items in the sale.
      */
-    public ReceiptDTO(LocalTime saleTime, double totalPrice, double totalVAT, double payment, double change, List<String> basicItemList) {
+    public ReceiptDTO(LocalTime saleTime, double totalPrice, double totalVAT, double payment, double change, List<ItemDTO> currentItemList) {
         this.saleTime = saleTime;
         this.totalPrice = totalPrice;
         this.totalVAT = totalVAT;
         this.payment = payment;
         this.change = change;
-        this.basicItemList = basicItemList;
+        this.currentItemList = currentItemList;
     }
 
     /**
@@ -84,7 +84,7 @@ public class ReceiptDTO {
      * 
      * @return The list of items in the sale.
      */
-    public List<String> getBasicItemList() {
-        return basicItemList;
+    public List<ItemDTO> getCurrentItemList() {
+        return currentItemList;
     }
 }

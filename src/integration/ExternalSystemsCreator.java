@@ -1,8 +1,10 @@
 package integration;
 
+/**
+ * Represents a class which will create the external systems in the integration layer.
+ */
 public class ExternalSystemsCreator {
     ExternalAccountingSystem externalAS = new ExternalAccountingSystem();
-    ExternalDiscountDatabase externalDD = new ExternalDiscountDatabase();
     ExternalInventorySystem externalIS = new ExternalInventorySystem();
 
     /**
@@ -12,13 +14,7 @@ public class ExternalSystemsCreator {
     public ExternalAccountingSystem getExternalAS() {
         return externalAS;
     }
-    /**
-     * Gets the external discount database.
-     * @return returns an object resposible for communication with the external discount database.
-     */
-    public ExternalDiscountDatabase getExternalDD() {
-        return externalDD;
-    }
+    
     /**
      * Gets the external inventory system.
      * @return returns an object resposible for communication with the external inventory system.

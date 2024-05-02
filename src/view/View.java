@@ -1,12 +1,15 @@
 package view;
 
+import java.text.DecimalFormat;
 import java.util.ResourceBundle.Control;
 
 import controller.Controller;
+import model.dto.ItemDTO;
 import model.dto.ReceiptDTO;
 
 /**
  * Represents the view of the program. This class represents the user interface which we will not code in this project.
+ * Instead, we will simulate a user interface by calling the controller with predefined calls. And print the results to the console.
  */
 
 public class View {
@@ -25,32 +28,41 @@ public class View {
      * Simulates a user input that generates calls to all system operations.
      */
     public void sampleExecution() {
-        //behöver fixa så att utskriften blir bättre och att det går att lägga till flera items på ett bra sätt, lägg till en if sats och fler items i externalInventorySystem
         contr.startSale();
-        System.out.println("A new sale has been started!");
+        System.out.println("A new sale has been started!" + "\n");
 
-        ReceiptDTO currReceiptDTO = contr.enterNewItem(1, 2);
-        printReceipt(currReceiptDTO);
+        ReceiptDTO currReceiptDTO = contr.enterNewItem(1);
+        printNewItem(currReceiptDTO,1);
+        currReceiptDTO = contr.enterNewItem(2);
+        printNewItem(currReceiptDTO,2);
+        currReceiptDTO = contr.enterNewItem(1);
+        printNewItem(currReceiptDTO,1);
+        currReceiptDTO = contr.enterNewItem(3);
+        printNewItem(currReceiptDTO,3);
 
         Double finalPrice = contr.endSale();
-        System.out.println("The final price is: " + finalPrice);
-        Double change = contr.payment(100);
-        System.out.println("The change is: " + change);
+        System.out.println("The final price is (including VAT): " + finalPrice + " SEK" + "\n");
+        double payment = 200;
+        System.out.println("Customer pays: " + payment + " SEK");
+        ReceiptDTO finaReceiptDTO = contr.payment(payment);
+
+        contr.printReceipt(finaReceiptDTO);
     }
 
     /**
-     * Receipt information is printed to the console.
+     *  Information about a the last item in the list is printed to the console.
+     * @param receiptDTO The receiptdto containing the information needed to print back to the console.
+     * @param itemIdentifier The identifier of the item that is to be entered.
      */
-    public void printReceipt(ReceiptDTO receiptDTO) {
-        System.out.println("Receipt: ");
-        System.out.println("Sale time: " + receiptDTO.getSaleTime());
-        System.out.println("Total price: " + receiptDTO.getTotalPrice());
-        System.out.println("Total VAT: " + receiptDTO.getTotalVAT());
-        System.out.println("Payment: " + receiptDTO.getPayment());
-        System.out.println("Change: " + receiptDTO.getChange());
-        System.out.println("Items: ");
-        for (String item : receiptDTO.getBasicItemList()) {
-            System.out.println(item);
-        }
+    void printNewItem(ReceiptDTO receiptDTO, int itemIdentifier) {
+        //DecimalFormat df = new DecimalFormat("#.##"); will fix this to make output look nicer if I have time.
+        ItemDTO item = receiptDTO.getCurrentItemList().get(receiptDTO.getCurrentItemList().size()-1);
+        System.out.println("Add item with item itemidentifier: "+ itemIdentifier);
+        System.out.println("Item name: " + item.getItemName());
+        System.out.println("Item price: " + item.getPrice() + " SEK");
+        System.out.println("Item VAT: " + item.getTaxVAT()*100 + "%");
+        System.out.println("Item description: " + item.getItemDescription() + "\n");
+        System.out.println("Total price (including VAT): " + receiptDTO.getTotalPrice() + " SEK");
+        System.out.println("Total VAT:   " + receiptDTO.getTotalVAT()+ "  SEK" + "\n");
     }
 }

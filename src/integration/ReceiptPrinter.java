@@ -1,18 +1,28 @@
 package integration;
 
+import model.dto.ItemDTO;
 import model.dto.ReceiptDTO;
 
+/**
+ * Represents a class which will handle communication with the receipt printer.
+ */
+
 public class ReceiptPrinter {
-    public void printReceipt(ReceiptDTO receipt) {
+    /**
+     * Calls the receipt printer to print the receipt. This method will also print the receipt to the console to give feedback to the view.
+     * 
+     * @param receipt the object containing all information that needs to be on the receipt.
+     */
+    public void printReceipt(ReceiptDTO receiptDTO) {
         System.out.println("Receipt: ");
-        System.out.println("Sale time: " + receipt.getSaleTime());
-        System.out.println("Total price: " + receipt.getTotalPrice());
-        System.out.println("Total VAT: " + receipt.getTotalVAT());
-        System.out.println("Payment: " + receipt.getPayment());
-        System.out.println("Change: " + receipt.getChange());
-        System.out.println("Items: ");
-        for (String item : receipt.getBasicItemList()) {
-            System.out.println(item);
+        System.out.println("Sale time: " + receiptDTO.getSaleTime());
+        for (ItemDTO item : receiptDTO.getCurrentItemList()) {
+            System.out.println(item.getItemName() + "\t" + item.getQuantity() + " x " + item.getPrice() + "\t" + (item.getPrice()*item.getQuantity()) + " SEK");
         }
+        System.out.println("\n");
+        System.out.println("Total price (including VAT): " + receiptDTO.getTotalPrice() + " SEK");
+        System.out.println("Total VAT:   " + receiptDTO.getTotalVAT()+ "  SEK" + "\n");
+        System.out.println("Payment: " + receiptDTO.getPayment() + " SEK");
+        System.out.println("Change: " + receiptDTO.getChange() + " SEK");
     }
 }
