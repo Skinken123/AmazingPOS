@@ -64,7 +64,7 @@ public class Sale {
     }
 
     /**
-     * Gets the total price of the sale.
+     * Gets the total price of the sale. 
      * 
      * @return The total price of the sale.
      */
