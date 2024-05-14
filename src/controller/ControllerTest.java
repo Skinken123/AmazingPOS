@@ -41,8 +41,9 @@ public class ControllerTest {
     @Test
     public void testEnterNewItem() {
         controller.startSale();
+        List<ItemDTO> itemList2 = new ArrayList<>();
         ItemDTO item = new ItemDTO(35, 1, "Tomato", "A box of red tomatos", 0.12, 1);
-        itemList.add(item);
+        itemList2.add(item);
         ReceiptDTO result = controller.enterNewItem(1); 
         ReceiptDTO expected = new ReceiptDTO(null, 35.0, 4.2, 0, 0, itemList);
 
@@ -50,11 +51,8 @@ public class ControllerTest {
         assertTrue(result.getTotalVAT() == expected.getTotalVAT(), "The total VAT is not the same");
         assertTrue(result.getPayment() == expected.getPayment(), "The payment is not the same");
         assertTrue(result.getChange() == expected.getChange(), "The change is not the same");
-        //assertTrue(result.getCurrentItemList().equals(expected.getCurrentItemList()), "The item list is not the same");
-
-        //controller.printReceipt(expected);
-        //System.out.println("\n" + "\n");
-        //controller.printReceipt(result);
+        //some bug here or something I dont understand
+        compareLists(result.getCurrentItemList(), expected.getCurrentItemList());
     }
 
     @Test
@@ -89,7 +87,7 @@ public class ControllerTest {
         assertTrue(result.getTotalVAT() == expected.getTotalVAT(), "The total VAT is not the same");
         assertTrue(result.getPayment() == expected.getPayment(), "The payment is not the same");
         assertTrue(result.getChange() == expected.getChange(), "The change is not the same");
-        //assertTrue(result.getCurrentItemList().equals(expected.getCurrentItemList()), "The item list is not the same");
+        compareLists(result.getCurrentItemList(), expected.getCurrentItemList());
     }
 
     @AfterEach
@@ -100,5 +98,17 @@ public class ControllerTest {
         externalIS = null;
         newSale = null;
         itemList = null;
+    }
+
+    void compareLists(List<ItemDTO> result, List<ItemDTO> expected) {
+        if (result.size() != expected.size()) {
+            fail("The item list is not the same");
+        }
+        else{
+            for (int i = 0; i < result.size(); i++) {
+                System.out.println(i + "\n");
+                assertTrue(result.get(i).equals(expected.get(i)), "The item list is not the same");
+            }
+        }
     }
 }
