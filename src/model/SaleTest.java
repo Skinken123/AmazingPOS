@@ -120,10 +120,6 @@ public class SaleTest {
         double expChange = expected.getChange();
         assertTrue(resChange == expChange, "The change is not the same");
 
-        //LocalTime resTime = result.getSaleTime();
-        //LocalTime expTime = expected.getSaleTime();
-        //assertTrue(resTime == expTime, "The sale time is not the same");
-
         List<ItemDTO> resItemList = result.getCurrentItemList();
         List<ItemDTO> expItemList = expected.getCurrentItemList();
         assertTrue(resItemList.equals(expItemList), "The item list is not the same");

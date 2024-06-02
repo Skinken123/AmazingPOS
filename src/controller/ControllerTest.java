@@ -20,6 +20,9 @@ import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.AfterEach;
 
+/**
+ * This is the class that will test all of the non constructor/get/set methods in the Controller class.
+ */
 public class ControllerTest {
     private Controller controller;  
     private ReceiptPrinter printer;
@@ -28,6 +31,9 @@ public class ControllerTest {
     private Sale newSale;
     List<ItemDTO> itemList;
 
+    /**
+     * This method sets up the test class before each test method is run.
+     */
     @BeforeEach
     public void setUp() {
         ExternalSystemsCreator creator = new ExternalSystemsCreator();
@@ -38,12 +44,14 @@ public class ControllerTest {
         controller = new Controller(creator, printer);
     }  
 
+    /**
+     * This method tests the startSale method in the Controller class. 
+     */
     @Test
     public void testEnterNewItem() {
         controller.startSale();
-        List<ItemDTO> itemList2 = new ArrayList<>();
         ItemDTO item = new ItemDTO(35, 1, "Tomato", "A box of red tomatos", 0.12, 1);
-        itemList2.add(item);
+        itemList.add(item);
         ReceiptDTO result = controller.enterNewItem(1); 
         ReceiptDTO expected = new ReceiptDTO(null, 35.0, 4.2, 0, 0, itemList);
 
@@ -51,10 +59,12 @@ public class ControllerTest {
         assertTrue(result.getTotalVAT() == expected.getTotalVAT(), "The total VAT is not the same");
         assertTrue(result.getPayment() == expected.getPayment(), "The payment is not the same");
         assertTrue(result.getChange() == expected.getChange(), "The change is not the same");
-        //some bug here or something I dont understand
         compareLists(result.getCurrentItemList(), expected.getCurrentItemList());
     }
 
+    /**
+     * This method tests the endSale method in the Controller class. 
+     */
     @Test
     public void testEndSale() {
         controller.startSale();
@@ -66,6 +76,9 @@ public class ControllerTest {
         assertTrue(result == expected, "The total price is not the same");
     }
 
+    /**
+     * This method tests the payment method in the Controller class. 
+     */
     @Test
     public void testPayment(){
         controller.startSale();
@@ -90,6 +103,9 @@ public class ControllerTest {
         compareLists(result.getCurrentItemList(), expected.getCurrentItemList());
     }
 
+    /**
+     * This method resets the test class after each test method is run.
+     */
     @AfterEach
     public void tearDown() {
         controller = null;
@@ -100,6 +116,13 @@ public class ControllerTest {
         itemList = null;
     }
 
+    /**
+     * This method compares two lists of ItemDTO objects.
+     * It compares the size of the lists and then compares each individual object in the list.
+     * If the lists are not the same it will fail the test.
+     * @param result The list of ItemDTO objects that is the result of the method.
+     * @param expected The list of ItemDTO objects that is the expected result of the method.
+     */
     void compareLists(List<ItemDTO> result, List<ItemDTO> expected) {
         if (result.size() != expected.size()) {
             fail("The item list is not the same");
