@@ -45,7 +45,7 @@ public class ControllerTest {
     }  
 
     /**
-     * This method tests the startSale method in the Controller class. 
+     * This method tests the startSale method in the Controller class to make sure that the method returns what is expected from a certain input. 
      */
     @Test
     public void testEnterNewItem() {
@@ -63,7 +63,7 @@ public class ControllerTest {
     }
 
     /**
-     * This method tests the endSale method in the Controller class. 
+     * This method tests the endSale method in the Controller class to make sure that the method returns what is expected from a certain input.  
      */
     @Test
     public void testEndSale() {
@@ -77,7 +77,7 @@ public class ControllerTest {
     }
 
     /**
-     * This method tests the payment method in the Controller class. 
+     * This method tests the payment method in the Controller class to make sure that the method returns what is expected from a certain input. 
      */
     @Test
     public void testPayment(){
